@@ -1,0 +1,27 @@
+# Core
+Django>=5.1,<5.2
+djangorestframework>=3.15,<4.0
+
+# Environment & Config
+django-environ>=0.11,<1.0
+
+# CORS
+django-cors-headers>=4.4,<5.0
+
+# Authentication
+djangorestframework-simplejwt>=5.3,<6.0
+
+# Database
+psycopg2-binary>=2.9,<3.0
+
+# Admin Enhancement
+django-jazzmin>=3.0,<4.0
+
+# API Documentation
+drf-spectacular>=0.27,<1.0
+
+# Static Files
+whitenoise>=6.6,<7.0
+
+# Production Server
+gunicorn>=22.0,<23.0
