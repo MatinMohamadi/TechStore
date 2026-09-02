@@ -33,8 +33,7 @@ urlpatterns = [
     ),
     # App URLs
     path("api/", include("accounts.urls")),
-    # path("api/categories/", include("catalog.urls")),
-    # path("api/products/", include("catalog.urls")),
+    path("api/", include("catalog.urls")),
     # path("api/cart/", include("cart.urls")),
     # path("api/orders/", include("orders.urls")),
     # path("api/payments/", include("payments.urls")),
