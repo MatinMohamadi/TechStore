@@ -35,7 +35,7 @@ urlpatterns = [
     path("api/", include("accounts.urls")),
     path("api/", include("catalog.urls")),
     path("api/", include("cart.urls")),
-    # path("api/orders/", include("orders.urls")),
+    path("api/", include("orders.urls")),
     # path("api/payments/", include("payments.urls")),
     # path("api/tickets/", include("support.urls")),
 ]
