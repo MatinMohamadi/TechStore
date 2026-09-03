@@ -143,6 +143,16 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/hour",
+        "user": "1000/hour",
+        "login": "10/minute",
+        "payment": "20/hour",
+    },
 }
 
 # JWT Settings
@@ -186,19 +196,59 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 300  # 5 minutes max per task
 
-# Logging
+# Logging — structured with separate files for payments and orders
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name} {message}",
+            "style": "{",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "payments_file": {
+            "class": "logging.FileHandler",
+            "filename": LOG_DIR / "payments.log",
+            "formatter": "verbose",
+        },
+        "orders_file": {
+            "class": "logging.FileHandler",
+            "filename": LOG_DIR / "orders.log",
+            "formatter": "verbose",
+        },
+        "orders_errors": {
+            "class": "logging.FileHandler",
+            "filename": LOG_DIR / "orders_errors.log",
+            "level": "ERROR",
+            "formatter": "verbose",
+        },
+        "payments_errors": {
+            "class": "logging.FileHandler",
+            "filename": LOG_DIR / "payments_errors.log",
+            "level": "ERROR",
+            "formatter": "verbose",
         },
     },
     "loggers": {
         "payments": {
-            "handlers": ["console"],
+            "handlers": ["console", "payments_file", "payments_errors"],
             "level": "INFO",
+        },
+        "orders": {
+            "handlers": ["console", "orders_file", "orders_errors"],
+            "level": "INFO",
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "WARNING",
         },
     },
 }

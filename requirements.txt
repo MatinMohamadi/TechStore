@@ -20,8 +20,22 @@ django-jazzmin>=3.0,<4.0
 # API Documentation
 drf-spectacular>=0.27,<1.0
 
+# Image processing (required for ImageField)
+Pillow>=10.0,<11.0
+
 # Static Files
 whitenoise>=6.6,<7.0
+
+# HTTP requests (for payment gateways)
+requests>=2.31,<3.0
+
+# Celery
+celery>=5.3,<6.0
+redis>=5.0,<6.0
+
+# S3 Storage (production)
+django-storages[boto3]>=1.14,<2.0
+boto3>=1.28,<2.0
 
 # Production Server
 gunicorn>=22.0,<23.0

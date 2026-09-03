@@ -4,6 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from rest_framework import permissions, status
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from orders.models import Order, OrderStatusHistory
@@ -27,6 +28,8 @@ class InitiatePaymentView(APIView):
     """
 
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "payment"
 
     def post(self, request):
         serializer = InitiatePaymentSerializer(data=request.data)
