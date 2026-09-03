@@ -1,0 +1,3742 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TechStore API",
+    "version": "1.0.0",
+    "description": "TechStore - Online Computer Products Store API\n\nA complete REST API for an e-commerce platform selling computer hardware, laptops, peripherals, and accessories. Features include JWT authentication, product catalog with advanced filtering, shopping cart, order management, payment gateway integration (Zarinpal), promotions/coupons, product reviews, and support tickets.\n\n**Authentication:** Most endpoints require JWT Bearer token. Register or login to obtain tokens."
+  },
+  "paths": {
+    "/api/addresses/": {
+      "get": {
+        "operationId": "api_addresses_list",
+        "description": "Returns all addresses for the authenticated user.",
+        "summary": "List user addresses",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Addresses"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAddressList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "api_addresses_create",
+        "description": "Add a new shipping address. Only one address can be default.",
+        "summary": "Create a new address",
+        "tags": [
+          "Addresses"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/addresses/{id}/": {
+      "get": {
+        "operationId": "api_addresses_retrieve",
+        "description": "Returns a specific address by ID (owner only).",
+        "summary": "Get address detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Addresses"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "api_addresses_update",
+        "description": "Full update of a specific address.",
+        "summary": "Update address",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Addresses"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "api_addresses_partial_update",
+        "description": "Partial update of a specific address.",
+        "summary": "Partial update address",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Addresses"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedAddressRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedAddressRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedAddressRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api_addresses_destroy",
+        "description": "Remove a specific address.",
+        "summary": "Delete address",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Addresses"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/auth/login/": {
+      "post": {
+        "operationId": "api_auth_login_create",
+        "description": "Authenticate with email and password. Returns access and refresh tokens.",
+        "summary": "Login and get JWT tokens",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/auth/me/": {
+      "get": {
+        "operationId": "api_auth_me_retrieve",
+        "description": "Returns the authenticated user's profile information.",
+        "summary": "Get current user profile",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "api_auth_me_update",
+        "description": "Full update of the authenticated user's profile.",
+        "summary": "Update profile",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserProfileRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserProfileRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UserProfileRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "api_auth_me_partial_update",
+        "description": "Partial update of the authenticated user's profile.",
+        "summary": "Partial update profile",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedUserProfileRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedUserProfileRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedUserProfileRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/register/": {
+      "post": {
+        "operationId": "api_auth_register_create",
+        "description": "Create a new account with email and password. Returns JWT tokens.",
+        "summary": "Register a new user",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              },
+              "examples": {
+                "Registration": {
+                  "value": {
+                    "email": "user@example.com",
+                    "password": "SecureP@ss123",
+                    "password_confirm": "SecureP@ss123",
+                    "first_name": "Ali",
+                    "last_name": "Ahmadi"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Register"
+                },
+                "examples": {
+                  "Registration": {
+                    "value": {
+                      "email": "user@example.com",
+                      "password": "SecureP@ss123",
+                      "password_confirm": "SecureP@ss123",
+                      "first_name": "Ali",
+                      "last_name": "Ahmadi"
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/token/refresh/": {
+      "post": {
+        "operationId": "api_auth_token_refresh_create",
+        "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenRefresh"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/brands/": {
+      "get": {
+        "operationId": "api_brands_list",
+        "description": "Returns a list of product brands.",
+        "summary": "List all brands",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Brands"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedBrandListList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "api_brands_create",
+        "description": "Create a new brand (admin).",
+        "summary": "Create a brand",
+        "tags": [
+          "Brands"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDetailRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/brands/{slug}/": {
+      "get": {
+        "operationId": "api_brands_retrieve",
+        "description": "Returns brand details.",
+        "summary": "Get brand detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Brands"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "api_brands_update",
+        "description": "GET/POST /api/brands/ — List/create brands.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDetailRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "api_brands_partial_update",
+        "description": "GET/POST /api/brands/ — List/create brands.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedBrandDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedBrandDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedBrandDetailRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api_brands_destroy",
+        "description": "GET/POST /api/brands/ — List/create brands.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/cart/": {
+      "get": {
+        "operationId": "api_cart_retrieve",
+        "description": "Returns the current user's cart (or guest cart via session). Shows items, quantities, prices, and coupon info.",
+        "summary": "View current cart",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/cart/apply-coupon/": {
+      "post": {
+        "operationId": "api_cart_apply_coupon_create",
+        "description": "Validate and apply a coupon code to the current cart. Checks: coupon exists, is active, within valid date range, minimum order amount met, usage limit not exceeded. The coupon is NOT consumed here — used_count increments only on successful payment.",
+        "summary": "Apply discount coupon to cart",
+        "tags": [
+          "Promotions"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/cart/items/": {
+      "post": {
+        "operationId": "api_cart_items_create",
+        "description": "Add a product to the current cart. Validates stock availability. If the product is already in the cart, increments quantity. Stock is reserved atomically to prevent overselling.",
+        "summary": "Add item to cart",
+        "tags": [
+          "Cart Items"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/cart/items/{id}/": {
+      "patch": {
+        "operationId": "api_cart_items_partial_update",
+        "description": "Change the quantity of a cart item. Stock is adjusted atomically.",
+        "summary": "Update cart item quantity",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Cart Items"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api_cart_items_destroy",
+        "description": "Remove an item from the cart. Reserved stock is released.",
+        "summary": "Remove cart item",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Cart Items"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "204": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/cart/merge/": {
+      "post": {
+        "operationId": "api_cart_merge_create",
+        "description": "Called after login to transfer guest cart items to the user's account. Duplicate products are merged (quantities summed). Returns the updated user cart.",
+        "summary": "Merge guest cart into user cart",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/categories/": {
+      "get": {
+        "operationId": "api_categories_list",
+        "description": "Returns categories with tree structure (parent-child).",
+        "summary": "List all categories",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Categories"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedCategoryListList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "api_categories_create",
+        "description": "Create a new category (admin).",
+        "summary": "Create a category",
+        "tags": [
+          "Categories"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDetailRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/categories/{slug}/": {
+      "get": {
+        "operationId": "api_categories_retrieve",
+        "description": "Returns a category with its children.",
+        "summary": "Get category detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Categories"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "api_categories_update",
+        "description": "GET/POST /api/categories/ — List/create categories (tree structure).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDetailRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "api_categories_partial_update",
+        "description": "GET/POST /api/categories/ — List/create categories (tree structure).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedCategoryDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedCategoryDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedCategoryDetailRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api_categories_destroy",
+        "description": "GET/POST /api/categories/ — List/create categories (tree structure).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/orders/": {
+      "get": {
+        "operationId": "api_orders_list",
+        "description": "Returns paginated list of the authenticated user's orders.",
+        "summary": "List user orders",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedOrderListList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/orders/{id}/": {
+      "get": {
+        "operationId": "api_orders_retrieve",
+        "description": "Returns full order details including items, status history, and totals. Only the order owner can access this endpoint.",
+        "summary": "Get order detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/orders/checkout/": {
+      "post": {
+        "operationId": "api_orders_checkout_create",
+        "description": "Convert the current cart into an order. Steps:\n1. Validates cart is not empty\n2. Checks stock availability for all items\n3. Confirms stock reduction (permanent)\n4. Creates Order + OrderItems with price snapshots\n5. Creates initial `pending` status history\n6. Clears the cart\n\nAfter this, the user can proceed to payment.",
+        "summary": "Checkout — create order from cart",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/payments/callback/": {
+      "get": {
+        "operationId": "api_payments_callback_retrieve",
+        "description": "Handles the callback from the payment gateway after user completes payment. If payment is verified successfully, updates order status to `paid` and sends a confirmation email. This endpoint is called by the gateway, not by the frontend.",
+        "summary": "Payment gateway callback",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/payments/initiate/": {
+      "post": {
+        "operationId": "api_payments_initiate_create",
+        "description": "Create a payment transaction and get a redirect URL to the payment gateway. Supports Zarinpal (default), IDPay, and Stripe. The `callback_url` is where the gateway redirects after payment.",
+        "summary": "Initiate payment",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/products/": {
+      "get": {
+        "operationId": "api_products_list",
+        "description": "Returns paginated product list. Supports:\n- **category**: Filter by category ID\n- **brand**: Filter by brand ID\n- **min_price / max_price**: Price range filter\n- **attr_<id>**: Dynamic attribute filter (e.g. `attr_1=16GB`)\n- **search**: Text search on title and description\n- **ordering**: `price`, `-price`, `created_at`, `-created_at`\n- **featured**: `true`/`false`\n- **status**: `draft`/`active`/`inactive`",
+        "summary": "List products with filtering",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "A search term.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedProductListList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "api_products_create",
+        "description": "Create a new product (admin).",
+        "summary": "Create a product",
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDetailRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/products/{id}/reviews/": {
+      "get": {
+        "operationId": "api_products_reviews_list",
+        "description": "Returns approved reviews for a specific product.",
+        "summary": "List approved reviews",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedReviewList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "api_products_reviews_create",
+        "description": "Submit a review for a product. Only users who have purchased the product can submit a review. Each user can review a product only once. Reviews require admin approval before appearing publicly.",
+        "summary": "Submit a product review",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Reviews"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/products/{slug}/": {
+      "get": {
+        "operationId": "api_products_retrieve",
+        "description": "Returns full product details including images, attributes, and variants.",
+        "summary": "Get product detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "api_products_update",
+        "description": "GET/POST /api/products/ — List/create products with filtering,\nsearch, and ordering.\n\nQuery params:\n  - category: category ID\n  - brand: brand ID\n  - min_price / max_price: price range\n  - attr_<id>: attribute value filter (e.g. attr_1=16GB)\n  - search: full-text search on title + description\n  - ordering: price, -price, created_at, -created_at, title, -title\n  - featured: true/false\n  - status: draft/active/inactive",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDetailRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "api_products_partial_update",
+        "description": "GET/POST /api/products/ — List/create products with filtering,\nsearch, and ordering.\n\nQuery params:\n  - category: category ID\n  - brand: brand ID\n  - min_price / max_price: price range\n  - attr_<id>: attribute value filter (e.g. attr_1=16GB)\n  - search: full-text search on title + description\n  - ordering: price, -price, created_at, -created_at, title, -title\n  - featured: true/false\n  - status: draft/active/inactive",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedProductDetailRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedProductDetailRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedProductDetailRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api_products_destroy",
+        "description": "GET/POST /api/products/ — List/create products with filtering,\nsearch, and ordering.\n\nQuery params:\n  - category: category ID\n  - brand: brand ID\n  - min_price / max_price: price range\n  - attr_<id>: attribute value filter (e.g. attr_1=16GB)\n  - search: full-text search on title + description\n  - ordering: price, -price, created_at, -created_at, title, -title\n  - featured: true/false\n  - status: draft/active/inactive",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "api"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/tickets/": {
+      "get": {
+        "operationId": "api_tickets_list",
+        "description": "Returns the authenticated user's tickets. Admin can see all tickets.",
+        "summary": "List support tickets",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Support"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedTicketListList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "api_tickets_create",
+        "description": "Create a ticket with a subject and initial message.",
+        "summary": "Create a new support ticket",
+        "tags": [
+          "Support"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketRequest"
+              },
+              "examples": {
+                "CreateTicket": {
+                  "value": {
+                    "subject": "Order not delivered",
+                    "message": "Hi, my order has not arrived yet."
+                  },
+                  "summary": "Create ticket"
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTicket"
+                },
+                "examples": {
+                  "CreateTicket": {
+                    "value": {
+                      "subject": "Order not delivered",
+                      "message": "Hi, my order has not arrived yet."
+                    },
+                    "summary": "Create ticket"
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/tickets/{id}/": {
+      "get": {
+        "operationId": "api_tickets_retrieve",
+        "description": "Returns full ticket details including all messages. Only owner or staff can access.",
+        "summary": "Get ticket detail with messages",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Support"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/tickets/{id}/messages/": {
+      "post": {
+        "operationId": "api_tickets_messages_create",
+        "description": "Send a message in a support ticket. When a staff member replies, the ticket status automatically changes to `answered`.",
+        "summary": "Add message to ticket",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Support"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/tickets/{id}/status/": {
+      "patch": {
+        "operationId": "api_tickets_status_partial_update",
+        "description": "Change ticket status. Available statuses: `open`, `answered`, `closed`.",
+        "summary": "Update ticket status (staff only)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Support"
+        ],
+        "security": [
+          {
+            "jwtAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "description": "Serializer for user addresses.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "province": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "postal_code": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "full_address": {
+            "type": "string"
+          },
+          "receiver_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "receiver_phone": {
+            "type": "string",
+            "maxLength": 15
+          },
+          "is_default": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "city",
+          "full_address",
+          "id",
+          "postal_code",
+          "province",
+          "receiver_name",
+          "receiver_phone",
+          "title"
+        ]
+      },
+      "AddressRequest": {
+        "type": "object",
+        "description": "Serializer for user addresses.",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "province": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "city": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "postal_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "full_address": {
+            "type": "string",
+            "minLength": 1
+          },
+          "receiver_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "receiver_phone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "is_default": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "city",
+          "full_address",
+          "postal_code",
+          "province",
+          "receiver_name",
+          "receiver_phone",
+          "title"
+        ]
+      },
+      "BrandDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "logo": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "BrandDetailRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "logo": {
+            "type": "string",
+            "format": "binary"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "BrandList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "logo": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "CategoryDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "parent": {
+            "type": "integer",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryList"
+            },
+            "readOnly": true
+          }
+        },
+        "required": [
+          "children",
+          "id",
+          "name"
+        ]
+      },
+      "CategoryDetailRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "parent": {
+            "type": "integer",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CategoryList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "parent": {
+            "type": "integer",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "children_count": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "children_count",
+          "id",
+          "name"
+        ]
+      },
+      "CategoryListRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "parent": {
+            "type": "integer",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CreateTicket": {
+        "type": "object",
+        "description": "Serializer for creating a ticket with first message.",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "subject"
+        ]
+      },
+      "CreateTicketRequest": {
+        "type": "object",
+        "description": "Serializer for creating a ticket with first message.",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "message",
+          "subject"
+        ]
+      },
+      "OrderDetail": {
+        "type": "object",
+        "description": "Full order detail with items and status history.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "order_number": {
+            "type": "string",
+            "readOnly": true
+          },
+          "user": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "user_email": {
+            "type": "string",
+            "readOnly": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusD26Enum"
+              }
+            ],
+            "readOnly": true
+          },
+          "shipping_address": {
+            "type": "integer",
+            "nullable": true
+          },
+          "total_amount": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "readOnly": true
+          },
+          "discount_amount": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "shipping_cost": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "final_amount": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "readOnly": true
+          },
+          "note": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            },
+            "readOnly": true
+          },
+          "status_history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderStatusHistory"
+            },
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "final_amount",
+          "id",
+          "items",
+          "order_number",
+          "status",
+          "status_history",
+          "total_amount",
+          "updated_at",
+          "user",
+          "user_email"
+        ]
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "product": {
+            "type": "integer"
+          },
+          "product_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "product_sku": {
+            "type": "string",
+            "readOnly": true
+          },
+          "variant": {
+            "type": "integer",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "unit_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "total_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "id",
+          "product",
+          "product_sku",
+          "product_title",
+          "quantity",
+          "total_price",
+          "unit_price"
+        ]
+      },
+      "OrderList": {
+        "type": "object",
+        "description": "Compact serializer for order listing.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "order_number": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusD26Enum"
+          },
+          "total_amount": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "discount_amount": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "shipping_cost": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "final_amount": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "items_count": {
+            "type": "string",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "items_count",
+          "order_number"
+        ]
+      },
+      "OrderStatusHistory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusD26Enum"
+              }
+            ],
+            "readOnly": true
+          },
+          "changed_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "note": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "changed_at",
+          "id",
+          "note",
+          "status"
+        ]
+      },
+      "PaginatedAddressList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            }
+          }
+        }
+      },
+      "PaginatedBrandListList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandList"
+            }
+          }
+        }
+      },
+      "PaginatedCategoryListList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryList"
+            }
+          }
+        }
+      },
+      "PaginatedOrderListList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderList"
+            }
+          }
+        }
+      },
+      "PaginatedProductListList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductList"
+            }
+          }
+        }
+      },
+      "PaginatedReviewList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            }
+          }
+        }
+      },
+      "PaginatedTicketListList": {
+        "type": "object",
+        "required": [
+          "count",
+          "results"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketList"
+            }
+          }
+        }
+      },
+      "PatchedAddressRequest": {
+        "type": "object",
+        "description": "Serializer for user addresses.",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "province": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "city": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "postal_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "full_address": {
+            "type": "string",
+            "minLength": 1
+          },
+          "receiver_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "receiver_phone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "is_default": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PatchedBrandDetailRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "logo": {
+            "type": "string",
+            "format": "binary"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "PatchedCategoryDetailRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "parent": {
+            "type": "integer",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        }
+      },
+      "PatchedProductDetailRequest": {
+        "type": "object",
+        "description": "Full serializer with images, attributes, variants.",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "category": {
+            "type": "integer"
+          },
+          "brand": {
+            "type": "integer",
+            "nullable": true
+          },
+          "description": {
+            "type": "string"
+          },
+          "base_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "discount_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "nullable": true
+          },
+          "sku": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusD23Enum"
+          },
+          "is_featured": {
+            "type": "boolean"
+          },
+          "warranty_months": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        }
+      },
+      "PatchedUserProfileRequest": {
+        "type": "object",
+        "description": "Serializer for viewing/updating user profile.",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 15
+          },
+          "first_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 150
+          }
+        }
+      },
+      "ProductAttributeValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "attribute": {
+            "type": "integer"
+          },
+          "attribute_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "attribute_unit": {
+            "type": "string",
+            "readOnly": true
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "attribute",
+          "attribute_name",
+          "attribute_unit",
+          "id",
+          "value"
+        ]
+      },
+      "ProductAttributeValueRequest": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "attribute",
+          "value"
+        ]
+      },
+      "ProductDetail": {
+        "type": "object",
+        "description": "Full serializer with images, attributes, variants.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "category": {
+            "type": "integer"
+          },
+          "category_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "brand": {
+            "type": "integer",
+            "nullable": true
+          },
+          "brand_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string"
+          },
+          "base_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "discount_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "nullable": true
+          },
+          "effective_price": {
+            "type": "string",
+            "readOnly": true
+          },
+          "sku": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusD23Enum"
+          },
+          "is_featured": {
+            "type": "boolean"
+          },
+          "warranty_months": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductImage"
+            },
+            "readOnly": true
+          },
+          "attribute_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductAttributeValue"
+            },
+            "readOnly": true
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductVariant"
+            },
+            "readOnly": true
+          },
+          "average_rating": {
+            "type": "string",
+            "readOnly": true
+          },
+          "in_stock": {
+            "type": "string",
+            "readOnly": true
+          },
+          "stock_quantity": {
+            "type": "string",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "attribute_values",
+          "average_rating",
+          "base_price",
+          "brand_name",
+          "category",
+          "category_name",
+          "created_at",
+          "effective_price",
+          "id",
+          "images",
+          "in_stock",
+          "sku",
+          "stock_quantity",
+          "title",
+          "updated_at",
+          "variants"
+        ]
+      },
+      "ProductDetailRequest": {
+        "type": "object",
+        "description": "Full serializer with images, attributes, variants.",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "category": {
+            "type": "integer"
+          },
+          "brand": {
+            "type": "integer",
+            "nullable": true
+          },
+          "description": {
+            "type": "string"
+          },
+          "base_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "discount_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "nullable": true
+          },
+          "sku": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusD23Enum"
+          },
+          "is_featured": {
+            "type": "boolean"
+          },
+          "warranty_months": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "base_price",
+          "category",
+          "sku",
+          "title"
+        ]
+      },
+      "ProductImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "alt_text": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "is_main": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "image"
+        ]
+      },
+      "ProductImageRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary"
+          },
+          "alt_text": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "is_main": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "image"
+        ]
+      },
+      "ProductList": {
+        "type": "object",
+        "description": "Compact serializer for product listing.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "category": {
+            "type": "integer"
+          },
+          "category_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "brand": {
+            "type": "integer",
+            "nullable": true
+          },
+          "brand_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "base_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "discount_price": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$",
+            "nullable": true
+          },
+          "effective_price": {
+            "type": "string",
+            "readOnly": true
+          },
+          "sku": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusD23Enum"
+          },
+          "is_featured": {
+            "type": "boolean"
+          },
+          "warranty_months": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "main_image": {
+            "type": "string",
+            "readOnly": true
+          },
+          "average_rating": {
+            "type": "string",
+            "readOnly": true
+          },
+          "in_stock": {
+            "type": "string",
+            "readOnly": true
+          },
+          "stock_quantity": {
+            "type": "string",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "average_rating",
+          "base_price",
+          "brand_name",
+          "category",
+          "category_name",
+          "created_at",
+          "effective_price",
+          "id",
+          "in_stock",
+          "main_image",
+          "sku",
+          "stock_quantity",
+          "title"
+        ]
+      },
+      "ProductVariant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "sku": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "attributes": {},
+          "price_diff": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "stock": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "sku"
+        ]
+      },
+      "ProductVariantRequest": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "attributes": {},
+          "price_diff": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,12}(?:\\.\\d{0,0})?$"
+          },
+          "stock": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "sku"
+        ]
+      },
+      "Register": {
+        "type": "object",
+        "description": "Serializer for user registration.",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 15
+          },
+          "first_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 150
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "description": "Serializer for user registration.",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "maxLength": 254
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 15
+          },
+          "first_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true,
+            "minLength": 1
+          },
+          "password_confirm": {
+            "type": "string",
+            "writeOnly": true,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "password_confirm"
+        ]
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "product": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "user_email": {
+            "type": "string",
+            "readOnly": true
+          },
+          "rating": {
+            "type": "integer",
+            "maximum": 5,
+            "minimum": 1
+          },
+          "comment": {
+            "type": "string"
+          },
+          "is_approved": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "is_approved",
+          "product",
+          "rating",
+          "user",
+          "user_email"
+        ]
+      },
+      "ReviewRequest": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "integer"
+          },
+          "rating": {
+            "type": "integer",
+            "maximum": 5,
+            "minimum": 1
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "product",
+          "rating"
+        ]
+      },
+      "Status726Enum": {
+        "enum": [
+          "open",
+          "answered",
+          "closed"
+        ],
+        "type": "string",
+        "description": "* `open` - Open\n* `answered` - Answered\n* `closed` - Closed"
+      },
+      "StatusD23Enum": {
+        "enum": [
+          "draft",
+          "active",
+          "inactive"
+        ],
+        "type": "string",
+        "description": "* `draft` - Draft\n* `active` - Active\n* `inactive` - Inactive"
+      },
+      "StatusD26Enum": {
+        "enum": [
+          "pending",
+          "paid",
+          "processing",
+          "shipped",
+          "delivered",
+          "canceled",
+          "refunded"
+        ],
+        "type": "string",
+        "description": "* `pending` - Pending\n* `paid` - Paid\n* `processing` - Processing\n* `shipped` - Shipped\n* `delivered` - Delivered\n* `canceled` - Canceled\n* `refunded` - Refunded"
+      },
+      "TicketDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "user": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "user_email": {
+            "type": "string",
+            "readOnly": true
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Status726Enum"
+              }
+            ],
+            "readOnly": true
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketMessage"
+            },
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "messages",
+          "status",
+          "subject",
+          "updated_at",
+          "user",
+          "user_email"
+        ]
+      },
+      "TicketList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status726Enum"
+          },
+          "messages_count": {
+            "type": "string",
+            "readOnly": true
+          },
+          "last_message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "last_message",
+          "messages_count",
+          "subject",
+          "updated_at"
+        ]
+      },
+      "TicketMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "sender": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "sender_email": {
+            "type": "string",
+            "readOnly": true
+          },
+          "message": {
+            "type": "string"
+          },
+          "is_staff": {
+            "type": "string",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "is_staff",
+          "message",
+          "sender",
+          "sender_email"
+        ]
+      },
+      "TokenRefresh": {
+        "type": "object",
+        "properties": {
+          "access": {
+            "type": "string",
+            "readOnly": true
+          },
+          "refresh": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "access",
+          "refresh"
+        ]
+      },
+      "TokenRefreshRequest": {
+        "type": "object",
+        "properties": {
+          "refresh": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "refresh"
+        ]
+      },
+      "UserProfile": {
+        "type": "object",
+        "description": "Serializer for viewing/updating user profile.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "readOnly": true
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 15
+          },
+          "first_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "full_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_verified": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "date_joined": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "date_joined",
+          "email",
+          "full_name",
+          "id",
+          "is_verified"
+        ]
+      },
+      "UserProfileRequest": {
+        "type": "object",
+        "description": "Serializer for viewing/updating user profile.",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 15
+          },
+          "first_name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 150
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "jwtAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Registration, login, and profile management"
+    },
+    {
+      "name": "Addresses",
+      "description": "User shipping addresses"
+    },
+    {
+      "name": "Categories",
+      "description": "Product categories (tree structure)"
+    },
+    {
+      "name": "Brands",
+      "description": "Product brands"
+    },
+    {
+      "name": "Products",
+      "description": "Product catalog with filtering and search"
+    },
+    {
+      "name": "Cart",
+      "description": "Shopping cart (guest + authenticated)"
+    },
+    {
+      "name": "Cart Items",
+      "description": "Add, update, and remove cart items"
+    },
+    {
+      "name": "Cart Coupon",
+      "description": "Apply discount codes to cart"
+    },
+    {
+      "name": "Orders",
+      "description": "Order management and checkout"
+    },
+    {
+      "name": "Payments",
+      "description": "Payment gateway (Zarinpal)"
+    },
+    {
+      "name": "Reviews",
+      "description": "Product reviews and ratings"
+    },
+    {
+      "name": "Promotions",
+      "description": "Discount codes and coupons"
+    },
+    {
+      "name": "Support",
+      "description": "Support tickets and messaging"
+    },
+    {
+      "name": "Health",
+      "description": "System health check"
+    }
+  ]
+}

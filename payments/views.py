@@ -2,6 +2,7 @@ import logging
 
 from django.db import transaction
 from django.utils import timezone
+from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
@@ -16,6 +17,27 @@ from .serializers import CallbackSerializer, InitiatePaymentSerializer
 logger = logging.getLogger("payments")
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Initiate payment",
+        description=(
+            "Create a payment transaction and get a redirect URL to the payment gateway. "
+            "Supports Zarinpal (default), IDPay, and Stripe. "
+            "The `callback_url` is where the gateway redirects after payment."
+        ),
+        tags=["Payments"],
+        examples=[
+            OpenApiExample(
+                "Initiate Zarinpal payment",
+                value={
+                    "order_id": 1,
+                    "gateway": "zarinpal",
+                    "callback_url": "https://yourdomain.com/payment/callback",
+                },
+            )
+        ],
+    )
+)
 class InitiatePaymentView(APIView):
     """
     POST /api/payments/initiate/ — Create a payment and get redirect URL.
@@ -106,6 +128,18 @@ class InitiatePaymentView(APIView):
         )
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="Payment gateway callback",
+        description=(
+            "Handles the callback from the payment gateway after user completes payment. "
+            "If payment is verified successfully, updates order status to `paid` "
+            "and sends a confirmation email. This endpoint is called by the gateway, "
+            "not by the frontend."
+        ),
+        tags=["Payments"],
+    )
+)
 class PaymentCallbackView(APIView):
     """
     GET /api/payments/callback/ — Handle payment gateway callback.

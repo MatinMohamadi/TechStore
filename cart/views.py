@@ -1,4 +1,5 @@
 from django.db import transaction
+from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,6 +38,13 @@ def get_or_create_cart(request):
         return cart
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="View current cart",
+        description="Returns the current user's cart (or guest cart via session). Shows items, quantities, prices, and coupon info.",
+        tags=["Cart"],
+    )
+)
 class CartView(APIView):
     """GET /api/cart/ — View current cart."""
 
@@ -48,6 +56,23 @@ class CartView(APIView):
         return Response(serializer.data)
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Add item to cart",
+        description=(
+            "Add a product to the current cart. Validates stock availability. "
+            "If the product is already in the cart, increments quantity. "
+            "Stock is reserved atomically to prevent overselling."
+        ),
+        tags=["Cart Items"],
+        examples=[
+            OpenApiExample(
+                "Add 2 units of product",
+                value={"product_id": 1, "quantity": 2},
+            )
+        ],
+    )
+)
 class CartItemAddView(APIView):
     """POST /api/cart/items/ — Add item to cart."""
 
@@ -135,6 +160,18 @@ class CartItemAddView(APIView):
         )
 
 
+@extend_schema_view(
+    patch=extend_schema(
+        summary="Update cart item quantity",
+        description="Change the quantity of a cart item. Stock is adjusted atomically.",
+        tags=["Cart Items"],
+    ),
+    delete=extend_schema(
+        summary="Remove cart item",
+        description="Remove an item from the cart. Reserved stock is released.",
+        tags=["Cart Items"],
+    ),
+)
 class CartItemDetailView(APIView):
     """PATCH/DELETE /api/cart/items/{id}/ — Update or remove cart item."""
 
@@ -212,6 +249,17 @@ class CartItemDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Merge guest cart into user cart",
+        description=(
+            "Called after login to transfer guest cart items to the user's account. "
+            "Duplicate products are merged (quantities summed). "
+            "Returns the updated user cart."
+        ),
+        tags=["Cart"],
+    )
+)
 class CartMergeView(APIView):
     """
     POST /api/cart/merge/ — Merge guest cart into user cart after login.

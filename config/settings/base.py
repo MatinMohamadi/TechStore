@@ -177,9 +177,36 @@ CORS_ALLOWED_ORIGINS = env.list(
 # DRF Spectacular (API Docs)
 SPECTACULAR_SETTINGS = {
     "TITLE": "TechStore API",
-    "DESCRIPTION": "TechStore - Online Computer Products Store API",
+    "DESCRIPTION": (
+        "TechStore - Online Computer Products Store API\n\n"
+        "A complete REST API for an e-commerce platform selling computer hardware, "
+        "laptops, peripherals, and accessories. Features include JWT authentication, "
+        "product catalog with advanced filtering, shopping cart, order management, "
+        "payment gateway integration (Zarinpal), promotions/coupons, product reviews, "
+        "and support tickets.\n\n"
+        "**Authentication:** Most endpoints require JWT Bearer token. "
+        "Register or login to obtain tokens."
+    ),
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "TAGS": [
+        {"name": "Auth", "description": "Registration, login, and profile management"},
+        {"name": "Addresses", "description": "User shipping addresses"},
+        {"name": "Categories", "description": "Product categories (tree structure)"},
+        {"name": "Brands", "description": "Product brands"},
+        {"name": "Products", "description": "Product catalog with filtering and search"},
+        {"name": "Cart", "description": "Shopping cart (guest + authenticated)"},
+        {"name": "Cart Items", "description": "Add, update, and remove cart items"},
+        {"name": "Cart Coupon", "description": "Apply discount codes to cart"},
+        {"name": "Orders", "description": "Order management and checkout"},
+        {"name": "Payments", "description": "Payment gateway (Zarinpal)"},
+        {"name": "Reviews", "description": "Product reviews and ratings"},
+        {"name": "Promotions", "description": "Discount codes and coupons"},
+        {"name": "Support", "description": "Support tickets and messaging"},
+        {"name": "Health", "description": "System health check"},
+    ],
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SORT_TAGS_ALPHA": True,
 }
 
 # Payment Gateways

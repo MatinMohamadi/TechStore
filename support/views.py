@@ -1,3 +1,4 @@
+from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,6 +21,27 @@ class IsOwnerOrStaff(permissions.BasePermission):
         return obj.user == request.user or request.user.is_staff
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="List support tickets",
+        description="Returns the authenticated user's tickets. Admin can see all tickets.",
+        tags=["Support"],
+    ),
+    post=extend_schema(
+        summary="Create a new support ticket",
+        description="Create a ticket with a subject and initial message.",
+        tags=["Support"],
+        examples=[
+            OpenApiExample(
+                "Create ticket",
+                value={
+                    "subject": "Order not delivered",
+                    "message": "Hi, my order has not arrived yet.",
+                },
+            )
+        ],
+    ),
+)
 class TicketListCreateView(generics.ListCreateAPIView):
     """
     GET  /api/tickets/ — List user's tickets
@@ -58,6 +80,13 @@ class TicketListCreateView(generics.ListCreateAPIView):
         )
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get ticket detail with messages",
+        description="Returns full ticket details including all messages. Only owner or staff can access.",
+        tags=["Support"],
+    )
+)
 class TicketDetailView(generics.RetrieveAPIView):
     """GET /api/tickets/{id}/ — Ticket detail with messages (owner or staff)."""
 
@@ -70,6 +99,16 @@ class TicketDetailView(generics.RetrieveAPIView):
         return Ticket.objects.filter(user=self.request.user)
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Add message to ticket",
+        description=(
+            "Send a message in a support ticket. "
+            "When a staff member replies, the ticket status automatically changes to `answered`."
+        ),
+        tags=["Support"],
+    )
+)
 class TicketMessageCreateView(APIView):
     """POST /api/tickets/{id}/messages/ — Add message to ticket."""
 
@@ -111,6 +150,13 @@ class TicketMessageCreateView(APIView):
         )
 
 
+@extend_schema_view(
+    patch=extend_schema(
+        summary="Update ticket status (staff only)",
+        description="Change ticket status. Available statuses: `open`, `answered`, `closed`.",
+        tags=["Support"],
+    )
+)
 class TicketStatusUpdateView(APIView):
     """PATCH /api/tickets/{id}/status/ — Staff changes ticket status."""
 

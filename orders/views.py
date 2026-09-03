@@ -1,4 +1,5 @@
 from django.db import transaction
+from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,6 +21,32 @@ from .serializers import (
 )
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Checkout — create order from cart",
+        description=(
+            "Convert the current cart into an order. Steps:\n"
+            "1. Validates cart is not empty\n"
+            "2. Checks stock availability for all items\n"
+            "3. Confirms stock reduction (permanent)\n"
+            "4. Creates Order + OrderItems with price snapshots\n"
+            "5. Creates initial `pending` status history\n"
+            "6. Clears the cart\n\n"
+            "After this, the user can proceed to payment."
+        ),
+        tags=["Orders"],
+        examples=[
+            OpenApiExample(
+                "Checkout with shipping",
+                value={
+                    "shipping_address_id": 1,
+                    "shipping_cost": 100000,
+                    "note": "Please handle with care",
+                },
+            )
+        ],
+    )
+)
 class CheckoutView(APIView):
     """
     POST /api/orders/checkout/ — Convert current cart into an order.
@@ -132,6 +159,13 @@ class CheckoutView(APIView):
         )
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="List user orders",
+        description="Returns paginated list of the authenticated user's orders.",
+        tags=["Orders"],
+    )
+)
 class OrderListView(generics.ListAPIView):
     """GET /api/orders/ — List current user's orders."""
 
@@ -142,6 +176,16 @@ class OrderListView(generics.ListAPIView):
         return Order.objects.filter(user=self.request.user)
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get order detail",
+        description=(
+            "Returns full order details including items, status history, "
+            "and totals. Only the order owner can access this endpoint."
+        ),
+        tags=["Orders"],
+    )
+)
 class OrderDetailView(generics.RetrieveAPIView):
     """GET /api/orders/{id}/ — Order detail (owner only)."""
 

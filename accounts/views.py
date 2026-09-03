@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, get_user_model
+from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
@@ -16,6 +17,25 @@ from .serializers import (
 User = get_user_model()
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Register a new user",
+        description="Create a new account with email and password. Returns JWT tokens.",
+        tags=["Auth"],
+        examples=[
+            OpenApiExample(
+                "Registration",
+                value={
+                    "email": "user@example.com",
+                    "password": "SecureP@ss123",
+                    "password_confirm": "SecureP@ss123",
+                    "first_name": "Ali",
+                    "last_name": "Ahmadi",
+                },
+            )
+        ],
+    )
+)
 class RegisterView(generics.CreateAPIView):
     """POST /api/auth/register/ — Register a new user."""
 
@@ -29,7 +49,6 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
 
         return Response(
@@ -44,6 +63,22 @@ class RegisterView(generics.CreateAPIView):
         )
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Login and get JWT tokens",
+        description="Authenticate with email and password. Returns access and refresh tokens.",
+        tags=["Auth"],
+        examples=[
+            OpenApiExample(
+                "Login",
+                value={
+                    "email": "user@example.com",
+                    "password": "SecureP@ss123",
+                },
+            )
+        ],
+    )
+)
 class LoginView(APIView):
     """POST /api/auth/login/ — Login with email and password."""
 
@@ -86,6 +121,23 @@ class LoginView(APIView):
         )
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get current user profile",
+        description="Returns the authenticated user's profile information.",
+        tags=["Auth"],
+    ),
+    put=extend_schema(
+        summary="Update profile",
+        description="Full update of the authenticated user's profile.",
+        tags=["Auth"],
+    ),
+    patch=extend_schema(
+        summary="Partial update profile",
+        description="Partial update of the authenticated user's profile.",
+        tags=["Auth"],
+    ),
+)
 class ProfileView(generics.RetrieveUpdateAPIView):
     """GET/PUT/PATCH /api/auth/me/ — View or update profile."""
 
@@ -96,6 +148,18 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="List user addresses",
+        description="Returns all addresses for the authenticated user.",
+        tags=["Addresses"],
+    ),
+    post=extend_schema(
+        summary="Create a new address",
+        description="Add a new shipping address. Only one address can be default.",
+        tags=["Addresses"],
+    ),
+)
 class AddressListCreateView(generics.ListCreateAPIView):
     """GET/POST /api/addresses/ — List or create addresses."""
 
@@ -106,6 +170,28 @@ class AddressListCreateView(generics.ListCreateAPIView):
         return Address.objects.filter(user=self.request.user)
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get address detail",
+        description="Returns a specific address by ID (owner only).",
+        tags=["Addresses"],
+    ),
+    put=extend_schema(
+        summary="Update address",
+        description="Full update of a specific address.",
+        tags=["Addresses"],
+    ),
+    patch=extend_schema(
+        summary="Partial update address",
+        description="Partial update of a specific address.",
+        tags=["Addresses"],
+    ),
+    delete=extend_schema(
+        summary="Delete address",
+        description="Remove a specific address.",
+        tags=["Addresses"],
+    ),
+)
 class AddressDetailView(generics.RetrieveUpdateDestroyAPIView):
     """GET/PUT/PATCH/DELETE /api/addresses/{id}/"""
 

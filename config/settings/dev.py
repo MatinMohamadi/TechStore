@@ -11,6 +11,10 @@ ALLOWED_HOSTS = ["*"]
 # CORS - allow all in development
 CORS_ALLOW_ALL_ORIGINS = True
 
+# NO SSL redirect in development
+SECURE_SSL_REDIRECT = False
+SECURE_PROXY_SSL_HEADER = None
+
 # Simplified error pages
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
