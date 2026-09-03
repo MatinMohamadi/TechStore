@@ -90,6 +90,8 @@ class CheckoutView(APIView):
                 user=request.user,
                 order_number=Order.generate_order_number(),
                 shipping_address=shipping_address,
+                coupon=cart.coupon,
+                discount_amount=cart.discount_amount,
                 shipping_cost=serializer.validated_data.get("shipping_cost", 0),
                 note=serializer.validated_data.get("note", ""),
             )

@@ -184,6 +184,10 @@ class PaymentCallbackView(APIView):
                     status=Order.Status.PAID,
                     note=f"Payment successful. Ref: {result.get('transaction_ref')}",
                 )
+
+                # Increment coupon usage (only on successful payment)
+                if order.coupon:
+                    order.coupon.increment_usage()
             else:
                 payment.status = Payment.Status.FAILED
                 payment.gateway_data = {

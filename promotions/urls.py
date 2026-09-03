@@ -1,5 +1,9 @@
 from django.urls import path
 
+from .views import ApplyCouponView, RemoveCouponView
+
 app_name = "promotions"
 
-urlpatterns = []
+urlpatterns = [
+    path("cart/apply-coupon/", ApplyCouponView.as_view(), name="apply-coupon"),
+]

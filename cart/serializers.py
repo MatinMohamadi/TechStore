@@ -24,11 +24,16 @@ class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
     total_price = serializers.ReadOnlyField()
     total_items = serializers.ReadOnlyField()
+    coupon_code = serializers.CharField(source="coupon.code", read_only=True, default=None)
 
     class Meta:
         model = Cart
-        fields = ["id", "user", "session_key", "items", "total_price", "total_items", "updated_at"]
-        read_only_fields = ["id", "user", "session_key", "updated_at"]
+        fields = [
+            "id", "user", "session_key", "items", "total_price",
+            "total_items", "coupon", "coupon_code", "discount_amount",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "user", "session_key", "discount_amount", "updated_at"]
 
 
 class AddCartItemSerializer(serializers.Serializer):

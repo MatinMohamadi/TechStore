@@ -30,6 +30,13 @@ class Order(models.Model):
         null=True,
         blank=True,
     )
+    coupon = models.ForeignKey(
+        "promotions.Coupon",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="orders",
+    )
     total_amount = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     discount_amount = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     shipping_cost = models.DecimalField(max_digits=12, decimal_places=0, default=0)
