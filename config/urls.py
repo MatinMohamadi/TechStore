@@ -39,7 +39,7 @@ urlpatterns = [
     path("api/", include("payments.urls")),
     path("api/", include("promotions.urls")),
     path("api/", include("reviews.urls")),
-    # path("api/tickets/", include("support.urls")),
+    path("api/", include("support.urls")),
 ]
 
 # Serve media files in development
