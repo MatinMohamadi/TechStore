@@ -172,6 +172,27 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
+# Payment Gateways
+ZARINPAL_MERCHANT_ID = env("ZARINPAL_MERCHANT_ID", default="test-merchant-id")
+ZARINPAL_SANDBOX = env.bool("ZARINPAL_SANDBOX", default=True)
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "payments": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
+
 # Jazzmin Admin Theme
 JAZZMIN_SETTINGS = {
     "site_title": "TechStore Admin",
