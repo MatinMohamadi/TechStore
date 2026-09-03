@@ -178,6 +178,10 @@ class PaymentCallbackView(APIView):
                 order.status = Order.Status.PAID
                 order.save(update_fields=["status"])
 
+                # Send order confirmation email (async)
+                from notifications.tasks import send_order_confirmation_email
+                send_order_confirmation_email.delay(order.id)
+
                 # Create status history
                 OrderStatusHistory.objects.create(
                     order=order,

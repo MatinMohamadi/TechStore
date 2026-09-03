@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background: #1a73e8; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+    <h1 style="margin: 0;">TechStore</h1>
+  </div>
+  <div style="border: 1px solid #ddd; border-top: none; padding: 30px; border-radius: 0 0 8px 8px;">
+    <h2 style="color: #333;">Order Status Updated</h2>
+    <p>Hi {{ user.first_name|default:user.email }},</p>
+    <p>Your order <strong>#{{ order.order_number }}</strong> status has been updated.</p>
+
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 20px 0; text-align: center;">
+      <p style="margin: 5px 0; color: #666;">Previous Status</p>
+      <p style="margin: 5px 0; font-size: 14px;">{{ old_status }}</p>
+      <p style="margin: 15px 0; font-size: 24px;">&#8595;</p>
+      <p style="margin: 5px 0; color: #666;">New Status</p>
+      <p style="margin: 5px 0; font-size: 20px; font-weight: bold; color: #1a73e8;">{{ new_status_label }}</p>
+    </div>
+
+    {% if new_status == 'shipped' %}
+    <p>Your order is on its way! You should receive it soon.</p>
+    {% elif new_status == 'delivered' %}
+    <p>Your order has been delivered. We hope you enjoy your purchase!</p>
+    {% elif new_status == 'canceled' %}
+    <p>Your order has been canceled. If you have any questions, please contact support.</p>
+    {% else %}
+    <p>Please check your account for more details.</p>
+    {% endif %}
+
+    <p>Order Total: <strong>{{ order.final_amount|floatformat:0 }} IRR</strong></p>
+
+    <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+    <p style="color: #666; font-size: 12px;">This is an automated email from TechStore.</p>
+  </div>
+</body>
+</html>

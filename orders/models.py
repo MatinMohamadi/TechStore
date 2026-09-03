@@ -53,6 +53,20 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.order_number}"
 
+    def update_status(self, new_status, note=""):
+        """Update order status, create history record, and send notification."""
+        old_status = self.status
+        if old_status == new_status:
+            return
+        self.status = new_status
+        self.save(update_fields=["status"])
+        OrderStatusHistory.objects.create(
+            order=self, status=new_status, note=note,
+        )
+        # Send status change email asynchronously
+        from notifications.tasks import send_order_status_change_email
+        send_order_status_change_email.delay(self.id, old_status, new_status)
+
     def recalculate_totals(self):
         """Recalculate order totals from items."""
         items_total = sum(item.total_price for item in self.items.all())
