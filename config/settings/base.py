@@ -2,7 +2,7 @@
 Base settings for TechStore project.
 Shared across all environments.
 """
-import os
+
 from datetime import timedelta
 from pathlib import Path
 
@@ -104,7 +104,9 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -137,9 +139,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.AllowAny",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
@@ -194,7 +194,10 @@ SPECTACULAR_SETTINGS = {
         {"name": "Addresses", "description": "User shipping addresses"},
         {"name": "Categories", "description": "Product categories (tree structure)"},
         {"name": "Brands", "description": "Product brands"},
-        {"name": "Products", "description": "Product catalog with filtering and search"},
+        {
+            "name": "Products",
+            "description": "Product catalog with filtering and search",
+        },
         {"name": "Cart", "description": "Shopping cart (guest + authenticated)"},
         {"name": "Cart Items", "description": "Add, update, and remove cart items"},
         {"name": "Cart Coupon", "description": "Apply discount codes to cart"},

@@ -1,0 +1,25 @@
+# Ruff linter configuration
+line-length = 120
+target-version = "py312"
+
+[lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+]
+ignore = [
+    "E501",   # line too long (handled by black)
+    "B008",   # function call in default argument
+]
+
+[lint.isort]
+known-first-party = ["accounts", "catalog", "inventory", "cart", "orders", "payments", "shipping", "reviews", "promotions", "notifications", "support"]
+
+[lint.per-file-ignores]
+# Django settings split across modules use star-import pattern
+"config/settings/*" = ["F403", "F405"]
+"config/*" = ["F403", "F405"]

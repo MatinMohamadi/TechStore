@@ -1,5 +1,3 @@
-import uuid
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework import status
@@ -28,8 +26,10 @@ class CartGuestTest(TestCase):
             status="active",
         )
         StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=0,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=0,
         )
         # Simulate guest session
         self.client.session.create()
@@ -115,12 +115,16 @@ class CartMergeTest(TestCase):
             status="active",
         )
         StockItem.objects.create(
-            product=self.product1, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=0,
+            product=self.product1,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=0,
         )
         StockItem.objects.create(
-            product=self.product2, warehouse=self.warehouse,
-            quantity=5, reserved_quantity=0,
+            product=self.product2,
+            warehouse=self.warehouse,
+            quantity=5,
+            reserved_quantity=0,
         )
         self.user = User.objects.create_user(
             email="merge@test.com", password="TestPass123!"
@@ -169,8 +173,10 @@ class CartMergeTest(TestCase):
         # User already has a cart with product1
         user_cart = Cart.objects.create(user=self.user)
         CartItem.objects.create(
-            cart=user_cart, product=self.product1,
-            quantity=1, unit_price_snapshot=self.product1.effective_price,
+            cart=user_cart,
+            product=self.product1,
+            quantity=1,
+            unit_price_snapshot=self.product1.effective_price,
         )
 
         # Guest has product1 + product2

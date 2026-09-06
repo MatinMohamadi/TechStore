@@ -47,8 +47,14 @@ class BrandAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = [
-        "title", "category", "brand", "base_price",
-        "discount_price", "sku", "status", "is_featured",
+        "title",
+        "category",
+        "brand",
+        "base_price",
+        "discount_price",
+        "sku",
+        "status",
+        "is_featured",
     ]
     list_filter = ["status", "is_featured", "category", "brand"]
     search_fields = ["title", "sku", "description"]

@@ -23,8 +23,13 @@ class TicketListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = [
-            "id", "subject", "status", "messages_count",
-            "last_message", "created_at", "updated_at",
+            "id",
+            "subject",
+            "status",
+            "messages_count",
+            "last_message",
+            "created_at",
+            "updated_at",
         ]
 
     def get_last_message(self, obj):
@@ -48,23 +53,32 @@ class TicketDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = [
-            "id", "user", "user_email", "subject", "status",
-            "messages", "created_at", "updated_at",
+            "id",
+            "user",
+            "user_email",
+            "subject",
+            "status",
+            "messages",
+            "created_at",
+            "updated_at",
         ]
         read_only_fields = ["id", "user", "status", "created_at", "updated_at"]
 
 
 class CreateTicketSerializer(serializers.Serializer):
     """Serializer for creating a ticket with first message."""
+
     subject = serializers.CharField(max_length=300)
     message = serializers.CharField()
 
 
 class TicketMessageCreateSerializer(serializers.Serializer):
     """Serializer for adding a message to a ticket."""
+
     message = serializers.CharField()
 
 
 class TicketStatusSerializer(serializers.Serializer):
     """Serializer for staff to change ticket status."""
+
     status = serializers.ChoiceField(choices=Ticket.Status.choices)

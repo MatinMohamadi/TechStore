@@ -18,13 +18,22 @@ class OrderStatusHistoryInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
-        "order_number", "user", "status", "total_amount",
-        "shipping_cost", "final_amount", "created_at",
+        "order_number",
+        "user",
+        "status",
+        "total_amount",
+        "shipping_cost",
+        "final_amount",
+        "created_at",
     ]
     list_filter = ["status", "created_at"]
     search_fields = ["order_number", "user__email"]
     readonly_fields = [
-        "order_number", "user", "total_amount", "final_amount", "created_at",
+        "order_number",
+        "user",
+        "total_amount",
+        "final_amount",
+        "created_at",
     ]
     inlines = [OrderItemInline, OrderStatusHistoryInline]
 

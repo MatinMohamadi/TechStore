@@ -106,8 +106,10 @@ class ApplyCouponAPITest(TestCase):
             status="active",
         )
         StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=0,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=0,
         )
         self.coupon = Coupon.objects.create(
             code="SAVE20",
@@ -124,7 +126,9 @@ class ApplyCouponAPITest(TestCase):
         reserve_stock(self.product, 2)
         cart, _ = Cart.objects.get_or_create(user=self.user)
         CartItem.objects.create(
-            cart=cart, product=self.product, quantity=2,
+            cart=cart,
+            product=self.product,
+            quantity=2,
             unit_price_snapshot=self.product.effective_price,
         )
 
@@ -157,7 +161,7 @@ class ApplyCouponAPITest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_apply_coupon_below_min_amount(self):
-        cheap_coupon = Coupon.objects.create(
+        Coupon.objects.create(
             code="MIN500",
             discount_type=Coupon.DiscountType.PERCENT,
             value=10,

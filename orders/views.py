@@ -6,19 +6,10 @@ from rest_framework.views import APIView
 
 from accounts.models import Address
 from cart.models import Cart
-from inventory.services import (
-    InsufficientStockError,
-    confirm_stock_reduction,
-    get_available_stock,
-    reserve_stock,
-)
+from inventory.services import confirm_stock_reduction, get_available_stock
 
 from .models import Order, OrderItem, OrderStatusHistory
-from .serializers import (
-    CheckoutSerializer,
-    OrderDetailSerializer,
-    OrderListSerializer,
-)
+from .serializers import CheckoutSerializer, OrderDetailSerializer, OrderListSerializer
 
 
 @extend_schema_view(
@@ -87,9 +78,7 @@ class CheckoutView(APIView):
         address_id = serializer.validated_data.get("shipping_address_id")
         if address_id:
             try:
-                shipping_address = Address.objects.get(
-                    pk=address_id, user=request.user
-                )
+                shipping_address = Address.objects.get(pk=address_id, user=request.user)
             except Address.DoesNotExist:
                 return Response(
                     {"error": "Invalid shipping address."},
@@ -98,9 +87,7 @@ class CheckoutView(APIView):
 
         # Validate stock for all items
         for item in cart_items:
-            available = get_available_stock(
-                product=item.product, variant=item.variant
-            )
+            available = get_available_stock(product=item.product, variant=item.variant)
             if available < item.quantity:
                 return Response(
                     {

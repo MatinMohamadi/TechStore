@@ -9,8 +9,8 @@ from .models import (
     ProductVariant,
 )
 
-
 # ── Category ──────────────────────────────────────────────
+
 
 class CategoryListSerializer(serializers.ModelSerializer):
     children_count = serializers.SerializerMethodField()
@@ -33,6 +33,7 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
 # ── Brand ─────────────────────────────────────────────────
 
+
 class BrandListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
@@ -46,6 +47,7 @@ class BrandDetailSerializer(serializers.ModelSerializer):
 
 
 # ── Product ───────────────────────────────────────────────
+
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,8 +72,11 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     """Compact serializer for product listing."""
+
     category_name = serializers.CharField(source="category.name", read_only=True)
-    brand_name = serializers.CharField(source="brand.name", read_only=True, default=None)
+    brand_name = serializers.CharField(
+        source="brand.name", read_only=True, default=None
+    )
     main_image = serializers.SerializerMethodField()
     average_rating = serializers.ReadOnlyField()
     in_stock = serializers.ReadOnlyField()
@@ -80,11 +85,25 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            "id", "title", "slug", "category", "category_name",
-            "brand", "brand_name", "base_price", "discount_price",
-            "effective_price", "sku", "status", "is_featured",
-            "warranty_months", "main_image", "average_rating",
-            "in_stock", "stock_quantity", "created_at",
+            "id",
+            "title",
+            "slug",
+            "category",
+            "category_name",
+            "brand",
+            "brand_name",
+            "base_price",
+            "discount_price",
+            "effective_price",
+            "sku",
+            "status",
+            "is_featured",
+            "warranty_months",
+            "main_image",
+            "average_rating",
+            "in_stock",
+            "stock_quantity",
+            "created_at",
         ]
 
     def get_main_image(self, obj):
@@ -97,13 +116,17 @@ class ProductListSerializer(serializers.ModelSerializer):
     def get_stock_quantity(self, obj):
         """Return total available stock across all warehouses."""
         from inventory.services import get_available_stock
+
         return get_available_stock(product=obj)
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     """Full serializer with images, attributes, variants."""
+
     category_name = serializers.CharField(source="category.name", read_only=True)
-    brand_name = serializers.CharField(source="brand.name", read_only=True, default=None)
+    brand_name = serializers.CharField(
+        source="brand.name", read_only=True, default=None
+    )
     images = ProductImageSerializer(many=True, read_only=True)
     attribute_values = ProductAttributeValueSerializer(many=True, read_only=True)
     variants = ProductVariantSerializer(many=True, read_only=True)
@@ -114,14 +137,32 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            "id", "title", "slug", "category", "category_name",
-            "brand", "brand_name", "description", "base_price",
-            "discount_price", "effective_price", "sku", "status",
-            "is_featured", "warranty_months", "images",
-            "attribute_values", "variants", "average_rating",
-            "in_stock", "stock_quantity", "created_at", "updated_at",
+            "id",
+            "title",
+            "slug",
+            "category",
+            "category_name",
+            "brand",
+            "brand_name",
+            "description",
+            "base_price",
+            "discount_price",
+            "effective_price",
+            "sku",
+            "status",
+            "is_featured",
+            "warranty_months",
+            "images",
+            "attribute_values",
+            "variants",
+            "average_rating",
+            "in_stock",
+            "stock_quantity",
+            "created_at",
+            "updated_at",
         ]
 
     def get_stock_quantity(self, obj):
         from inventory.services import get_available_stock
+
         return get_available_stock(product=obj)

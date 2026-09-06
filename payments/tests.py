@@ -8,8 +8,8 @@ from rest_framework.test import APIClient
 
 from orders.models import Order, OrderStatusHistory
 
-from .models import Payment
 from .gateways import PaymentGatewayError
+from .models import Payment
 
 User = get_user_model()
 
@@ -88,8 +88,10 @@ class InitiatePaymentTest(TestCase):
         self.order.status = Order.Status.PAID
         self.order.save()
         Payment.objects.create(
-            order=self.order, gateway="zarinpal",
-            amount=self.order.final_amount, status=Payment.Status.SUCCESS,
+            order=self.order,
+            gateway="zarinpal",
+            amount=self.order.final_amount,
+            status=Payment.Status.SUCCESS,
         )
         self.client.force_authenticate(user=self.user)
         resp = self.client.post(

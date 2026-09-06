@@ -8,7 +8,7 @@ from cart.models import Cart, CartItem
 from catalog.models import Category, Product
 from inventory.models import StockItem, Warehouse
 
-from .models import Order, OrderItem, OrderStatusHistory
+from .models import Order
 
 User = get_user_model()
 
@@ -29,8 +29,10 @@ class CheckoutTest(TestCase):
             status="active",
         )
         StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=0,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=0,
         )
         self.address = Address.objects.create(
             user=self.user,
@@ -47,9 +49,11 @@ class CheckoutTest(TestCase):
         """Helper: add product to user's cart and reserve stock."""
         cart, _ = Cart.objects.get_or_create(user=self.user)
         from inventory.services import reserve_stock
+
         reserve_stock(self.product, quantity)
         CartItem.objects.create(
-            cart=cart, product=self.product,
+            cart=cart,
+            product=self.product,
             quantity=quantity,
             unit_price_snapshot=self.product.effective_price,
         )
@@ -82,6 +86,7 @@ class CheckoutTest(TestCase):
 
         # Verify stock was reduced
         from inventory.services import get_available_stock
+
         available = get_available_stock(product=self.product)
         self.assertEqual(available, 8)
 

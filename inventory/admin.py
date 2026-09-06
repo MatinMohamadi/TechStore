@@ -12,9 +12,14 @@ class WarehouseAdmin(admin.ModelAdmin):
 @admin.register(StockItem)
 class StockItemAdmin(admin.ModelAdmin):
     list_display = [
-        "product", "variant", "warehouse",
-        "quantity", "reserved_quantity", "available_display",
-        "low_stock_threshold", "is_low_stock_display",
+        "product",
+        "variant",
+        "warehouse",
+        "quantity",
+        "reserved_quantity",
+        "available_display",
+        "low_stock_threshold",
+        "is_low_stock_display",
     ]
     list_filter = ["warehouse", "low_stock_threshold"]
     search_fields = ["product__title", "variant__sku"]

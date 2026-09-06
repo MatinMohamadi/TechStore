@@ -7,7 +7,14 @@ from .models import Address, User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     model = User
-    list_display = ["email", "phone_number", "first_name", "last_name", "is_verified", "is_staff"]
+    list_display = [
+        "email",
+        "phone_number",
+        "first_name",
+        "last_name",
+        "is_verified",
+        "is_staff",
+    ]
     list_filter = ["is_verified", "is_staff", "is_active"]
     search_fields = ["email", "phone_number", "first_name", "last_name"]
     ordering = ["-date_joined"]
@@ -15,7 +22,19 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Personal Info", {"fields": ("first_name", "last_name", "phone_number")}),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "is_verified", "groups", "user_permissions")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "is_verified",
+                    "groups",
+                    "user_permissions",
+                )
+            },
+        ),
     )
 
     add_fieldsets = (
@@ -23,7 +42,17 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2", "first_name", "last_name", "phone_number", "is_verified", "is_staff", "is_active"),
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                    "first_name",
+                    "last_name",
+                    "phone_number",
+                    "is_verified",
+                    "is_staff",
+                    "is_active",
+                ),
             },
         ),
     )

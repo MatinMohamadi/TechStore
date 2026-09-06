@@ -193,9 +193,7 @@ class ProductVariant(models.Model):
     )
     sku = models.CharField(max_length=50, unique=True)
     attributes = models.JSONField(default=dict, blank=True)
-    price_diff = models.DecimalField(
-        max_digits=12, decimal_places=0, default=0
-    )
+    price_diff = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     stock = models.PositiveIntegerField(default=0)
 
     class Meta:

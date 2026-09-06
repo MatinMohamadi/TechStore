@@ -1,6 +1,7 @@
 """
 Development settings for TechStore project.
 """
+
 from .base import *  # noqa: F401,F403
 
 DEBUG = True
@@ -20,3 +21,6 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 
 # Email backend - console for development
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Celery: run tasks eagerly in dev (no Redis needed)
+CELERY_TASK_ALWAYS_EAGER = True

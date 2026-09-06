@@ -5,13 +5,13 @@ To add a new gateway:
 1. Create a class implementing PaymentGatewayInterface
 2. Register it in GATEWAY_MAP below
 """
+
 import logging
 from abc import ABC, abstractmethod
 from decimal import Decimal
 
 import requests
 from django.conf import settings
-from django.utils import timezone
 
 logger = logging.getLogger("payments")
 
@@ -54,6 +54,7 @@ class PaymentGatewayInterface(ABC):
 
 class PaymentGatewayError(Exception):
     """Raised when gateway communication fails."""
+
     pass
 
 
@@ -99,7 +100,7 @@ class ZarinpalGateway(PaymentGatewayInterface):
             data = resp.json()
         except requests.RequestException as e:
             logger.error(f"Zarinpal initiate error: {e}")
-            raise PaymentGatewayError(f"Gateway communication failed: {e}")
+            raise PaymentGatewayError(f"Gateway communication failed: {e}") from e
 
         if data.get("Status") == 100:
             authority = data["Authority"]
@@ -133,7 +134,7 @@ class ZarinpalGateway(PaymentGatewayInterface):
             data = resp.json()
         except requests.RequestException as e:
             logger.error(f"Zarinpal verify error: {e}")
-            raise PaymentGatewayError(f"Gateway verification failed: {e}")
+            raise PaymentGatewayError(f"Gateway verification failed: {e}") from e
 
         # Status 100 = success, 101 = already verified
         success = data.get("Status") in (100, 101)

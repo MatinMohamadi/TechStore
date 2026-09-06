@@ -174,7 +174,10 @@ class PaymentCallbackView(APIView):
         # If gateway reports failure
         if gateway_status != "OK":
             payment.status = Payment.Status.FAILED
-            payment.gateway_data = {**payment.gateway_data, "callback_status": gateway_status}
+            payment.gateway_data = {
+                **payment.gateway_data,
+                "callback_status": gateway_status,
+            }
             payment.save(update_fields=["status", "gateway_data"])
             return Response(
                 {"status": "failed", "message": "Payment was not completed."},
@@ -206,9 +209,14 @@ class PaymentCallbackView(APIView):
                     "ref_id": result.get("transaction_ref"),
                     "card_pan": result.get("card_pan"),
                 }
-                payment.save(update_fields=[
-                    "status", "transaction_ref", "paid_at", "gateway_data",
-                ])
+                payment.save(
+                    update_fields=[
+                        "status",
+                        "transaction_ref",
+                        "paid_at",
+                        "gateway_data",
+                    ]
+                )
 
                 # Update order status
                 order = payment.order
@@ -217,6 +225,7 @@ class PaymentCallbackView(APIView):
 
                 # Send order confirmation email (async)
                 from notifications.tasks import send_order_confirmation_email
+
                 send_order_confirmation_email.delay(order.id)
 
                 # Create status history

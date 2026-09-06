@@ -6,7 +6,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from catalog.models import Category, Product
-from inventory.models import StockItem, Warehouse
 from orders.models import Order, OrderItem, OrderStatusHistory
 
 from .models import Review
@@ -48,9 +47,7 @@ class ReviewPermissionTest(TestCase):
             quantity=1,
             unit_price=Decimal("2500000"),
         )
-        OrderStatusHistory.objects.create(
-            order=self.order, status=Order.Status.PAID
-        )
+        OrderStatusHistory.objects.create(order=self.order, status=Order.Status.PAID)
 
     def test_buyer_can_review(self):
         self.client.force_authenticate(user=self.buyer)
@@ -109,8 +106,11 @@ class ReviewPermissionTest(TestCase):
 
     def test_unauthenticated_can_read_approved_reviews(self):
         Review.objects.create(
-            product=self.product, user=self.buyer,
-            rating=5, comment="Good", is_approved=True,
+            product=self.product,
+            user=self.buyer,
+            rating=5,
+            comment="Good",
+            is_approved=True,
         )
         resp = self.client.get(f"/api/products/{self.product.id}/reviews/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)

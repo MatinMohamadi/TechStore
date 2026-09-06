@@ -4,6 +4,7 @@ Async email notification tasks for TechStore.
 Uses Celery with Redis as broker. In development, emails are printed
 to the console (django.core.mail.backends.console.EmailBackend).
 """
+
 from celery import shared_task
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -44,7 +45,7 @@ def send_order_confirmation_email(self, order_id):
         )
     except Exception as exc:
         # Retry on failure
-        raise self.retry(exc=exc, countdown=60)
+        raise self.retry(exc=exc, countdown=60) from exc
 
 
 @shared_task(bind=True, max_retries=3)
@@ -83,4 +84,4 @@ def send_order_status_change_email(self, order_id, old_status, new_status):
             fail_silently=False,
         )
     except Exception as exc:
-        raise self.retry(exc=exc, countdown=60)
+        raise self.retry(exc=exc, countdown=60) from exc

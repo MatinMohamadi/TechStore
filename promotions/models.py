@@ -14,11 +14,14 @@ class Coupon(models.Model):
         max_length=10, choices=DiscountType.choices, default=DiscountType.PERCENT
     )
     value = models.DecimalField(
-        max_digits=10, decimal_places=0,
+        max_digits=10,
+        decimal_places=0,
         help_text="Percent (e.g. 10 for 10%) or fixed amount in IRR",
     )
     min_order_amount = models.DecimalField(
-        max_digits=12, decimal_places=0, default=0,
+        max_digits=12,
+        decimal_places=0,
+        default=0,
         help_text="Minimum order amount required to use this coupon",
     )
     max_uses = models.PositiveIntegerField(
@@ -42,10 +45,7 @@ class Coupon(models.Model):
     def is_valid_now(self):
         """Check if coupon is currently valid (active + date range)."""
         now = timezone.now()
-        return (
-            self.is_active
-            and self.valid_from <= now <= self.valid_to
-        )
+        return self.is_active and self.valid_from <= now <= self.valid_to
 
     @property
     def is_usage_exhausted(self):
@@ -83,6 +83,4 @@ class Coupon(models.Model):
 
     def increment_usage(self):
         """Increment used_count by 1."""
-        Coupon.objects.filter(pk=self.pk).update(
-            used_count=models.F("used_count") + 1
-        )
+        Coupon.objects.filter(pk=self.pk).update(used_count=models.F("used_count") + 1)

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ApplyCouponView, RemoveCouponView
+from .views import ApplyCouponView
 
 app_name = "promotions"
 

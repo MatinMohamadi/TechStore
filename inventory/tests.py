@@ -34,23 +34,30 @@ class StockItemModelTest(TestCase):
 
     def test_available_stock(self):
         StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=3,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=3,
         )
         item = StockItem.objects.first()
         self.assertEqual(item.available, 7)
 
     def test_in_stock(self):
         item = StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=5, reserved_quantity=5,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=5,
+            reserved_quantity=5,
         )
         self.assertFalse(item.is_in_stock)
 
     def test_low_stock(self):
         item = StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=8, low_stock_threshold=3,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=8,
+            low_stock_threshold=3,
         )
         self.assertTrue(item.is_low_stock)  # available=2 <= threshold=3
 
@@ -67,8 +74,10 @@ class StockServiceTest(TestCase):
             status="active",
         )
         StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=10, reserved_quantity=0,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=10,
+            reserved_quantity=0,
         )
 
     def test_get_available_stock(self):
@@ -148,8 +157,10 @@ class StockConcurrencyTest(TransactionTestCase):
             status="active",
         )
         StockItem.objects.create(
-            product=self.product, warehouse=self.warehouse,
-            quantity=5, reserved_quantity=0,
+            product=self.product,
+            warehouse=self.warehouse,
+            quantity=5,
+            reserved_quantity=0,
         )
 
     @unittest.skipIf(is_sqlite(), "SQLite does not support row-level select_for_update")

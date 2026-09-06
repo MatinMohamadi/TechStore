@@ -9,8 +9,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = [
-            "id", "product", "user", "user_email",
-            "rating", "comment", "is_approved", "created_at",
+            "id",
+            "product",
+            "user",
+            "user_email",
+            "rating",
+            "comment",
+            "is_approved",
+            "created_at",
         ]
         read_only_fields = ["id", "user", "is_approved", "created_at"]
 
@@ -21,10 +27,15 @@ class ReviewSerializer(serializers.ModelSerializer):
             product = attrs.get("product")
             # Check if user has a paid order with this product
             from orders.models import Order, OrderItem
+
             has_purchased = OrderItem.objects.filter(
                 order__user=request.user,
-                order__status__in=[Order.Status.PAID, Order.Status.PROCESSING,
-                                   Order.Status.SHIPPED, Order.Status.DELIVERED],
+                order__status__in=[
+                    Order.Status.PAID,
+                    Order.Status.PROCESSING,
+                    Order.Status.SHIPPED,
+                    Order.Status.DELIVERED,
+                ],
                 product=product,
             ).exists()
             if not has_purchased:

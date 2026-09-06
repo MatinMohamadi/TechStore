@@ -61,23 +61,28 @@ class Order(models.Model):
         self.status = new_status
         self.save(update_fields=["status"])
         OrderStatusHistory.objects.create(
-            order=self, status=new_status, note=note,
+            order=self,
+            status=new_status,
+            note=note,
         )
         # Send status change email asynchronously
         from notifications.tasks import send_order_status_change_email
+
         send_order_status_change_email.delay(self.id, old_status, new_status)
 
     def recalculate_totals(self):
         """Recalculate order totals from items."""
         items_total = sum(item.total_price for item in self.items.all())
         self.total_amount = items_total
-        self.final_amount = self.total_amount - self.discount_amount + self.shipping_cost
+        self.final_amount = (
+            self.total_amount - self.discount_amount + self.shipping_cost
+        )
         self.save(update_fields=["total_amount", "final_amount"])
 
     @staticmethod
     def generate_order_number():
         """Generate unique order number: TS-YYYYMMDD-XXXX"""
-        import datetime
+
         from django.utils import timezone
 
         today = timezone.now()

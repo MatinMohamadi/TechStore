@@ -32,7 +32,7 @@ class ProductReviewListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        from catalog.models import Product
+
         product_id = self.kwargs.get("pk")
         return Review.objects.filter(
             product_id=product_id, is_approved=True
@@ -40,6 +40,7 @@ class ProductReviewListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         from catalog.models import Product
+
         product = Product.objects.get(pk=self.kwargs["pk"])
         serializer.save(product=product)
 
@@ -52,6 +53,7 @@ class ProductReviewListCreateView(generics.ListCreateAPIView):
             )
 
         from catalog.models import Product
+
         try:
             product = Product.objects.get(pk=self.kwargs["pk"])
         except Product.DoesNotExist:

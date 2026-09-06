@@ -22,7 +22,9 @@ class RegisterAPITest(TestCase):
         }
 
     def test_successful_registration(self):
-        response = self.client.post("/api/auth/register/", self.valid_data, format="json")
+        response = self.client.post(
+            "/api/auth/register/", self.valid_data, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("tokens", response.data)
         self.assertIn("access", response.data["tokens"])
@@ -32,7 +34,9 @@ class RegisterAPITest(TestCase):
 
     def test_duplicate_email_registration(self):
         User.objects.create_user(email="test@example.com", password="TestPass123!")
-        response = self.client.post("/api/auth/register/", self.valid_data, format="json")
+        response = self.client.post(
+            "/api/auth/register/", self.valid_data, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_mismatch(self):

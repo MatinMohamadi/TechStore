@@ -107,7 +107,9 @@ class ProductFilterSearchTest(TestCase):
     def test_ordering_by_price_asc(self):
         response = self.client.get("/api/products/?ordering=price")
         titles = [p["title"] for p in response.data["results"]]
-        self.assertEqual(titles, ["Logitech Mouse", "ASUS VivoBook 15", "ASUS ROG Strix G16"])
+        self.assertEqual(
+            titles, ["Logitech Mouse", "ASUS VivoBook 15", "ASUS ROG Strix G16"]
+        )
 
     def test_ordering_by_price_desc(self):
         response = self.client.get("/api/products/?ordering=-price")

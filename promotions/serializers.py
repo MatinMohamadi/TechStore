@@ -9,9 +9,17 @@ class CouponSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coupon
         fields = [
-            "id", "code", "discount_type", "value",
-            "min_order_amount", "max_uses", "used_count",
-            "valid_from", "valid_to", "is_active", "is_valid_now",
+            "id",
+            "code",
+            "discount_type",
+            "value",
+            "min_order_amount",
+            "max_uses",
+            "used_count",
+            "valid_from",
+            "valid_to",
+            "is_active",
+            "is_valid_now",
         ]
         read_only_fields = ["id", "used_count"]
 

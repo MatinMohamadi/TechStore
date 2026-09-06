@@ -3,8 +3,6 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from cart.models import Cart
-
 from .models import Coupon
 from .serializers import ApplyCouponSerializer
 
@@ -54,6 +52,7 @@ class ApplyCouponView(APIView):
             )
 
         from cart.views import get_or_create_cart
+
         cart = get_or_create_cart(request)
 
         if not cart.items.exists():
@@ -104,6 +103,7 @@ class RemoveCouponView(APIView):
 
     def delete(self, request):
         from cart.views import get_or_create_cart
+
         cart = get_or_create_cart(request)
         cart.coupon = None
         cart.discount_amount = 0

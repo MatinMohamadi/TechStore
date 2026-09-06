@@ -1,12 +1,15 @@
 """
 Production settings for TechStore project.
 """
+
 from .base import *  # noqa: F401,F403
 
 DEBUG = False
 
 # Allowed Hosts
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["yourdomain.com", "localhost", "127.0.0.1"])
+ALLOWED_HOSTS = env.list(
+    "DJANGO_ALLOWED_HOSTS", default=["yourdomain.com", "localhost", "127.0.0.1"]
+)
 
 # Security settings
 SECURE_BROWSER_XSS_FILTER = True
@@ -51,7 +54,9 @@ EMAIL_PORT = int(env("EMAIL_PORT", default=587))
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="TechStore <noreply@techstore.com>")
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL", default="TechStore <noreply@techstore.com>"
+)
 
 # Celery
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://redis:6379/0")

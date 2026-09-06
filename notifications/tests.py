@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase, override_settings
 
-from orders.models import Order, OrderStatusHistory
+from orders.models import Order
 
 from .tasks import send_order_confirmation_email, send_order_status_change_email
 
@@ -53,9 +53,7 @@ class CeleryTaskTest(TestCase):
             status=Order.Status.PAID,
         )
 
-        result = send_order_status_change_email.delay(
-            order.id, "paid", "shipped"
-        )
+        result = send_order_status_change_email.delay(order.id, "paid", "shipped")
         self.assertTrue(result.successful())
 
         self.assertEqual(len(mail.outbox), 1)
@@ -84,8 +82,6 @@ class CeleryTaskTest(TestCase):
 
         order.refresh_from_db()
         self.assertEqual(order.status, "shipped")
-        self.assertEqual(
-            order.status_history.filter(status="shipped").count(), 1
-        )
+        self.assertEqual(order.status_history.filter(status="shipped").count(), 1)
         # Email was sent
         self.assertEqual(len(mail.outbox), 1)

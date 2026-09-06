@@ -8,6 +8,7 @@ NOTE: select_for_update provides true row-level locking on PostgreSQL.
 On SQLite, it uses database-level locking which may raise OperationalError
 under heavy concurrency.  The retry logic below handles this gracefully.
 """
+
 import time
 
 from django.db import OperationalError, transaction
