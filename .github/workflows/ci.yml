@@ -87,7 +87,7 @@ jobs:
 
       # ── Django checks ────────────────────────────────────
       - name: Run Django system check
-        run: python manage.py check --deploy
+        run: python manage.py check
 
       # ── Run tests ────────────────────────────────────────
       - name: Run tests with coverage

@@ -37,5 +37,10 @@ PASSWORD_HASHERS = [
 REST_FRAMEWORK = {
     **globals().get("REST_FRAMEWORK", {}),
     "DEFAULT_THROTTLE_CLASSES": [],
-    "DEFAULT_THROTTLE_RATES": {},
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "10000/hour",
+        "user": "10000/hour",
+        "login": "10000/minute",
+        "payment": "10000/hour",
+    },
 }
