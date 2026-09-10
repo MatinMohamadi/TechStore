@@ -97,7 +97,7 @@
 
 ```bash
 # ۱) کلون کردن پروژه
-git clone https://github.com/MatinMohamadi/PC-Online-Shop.git
+https://github.com/MatinMohamadi/TechStore.git
 cd PC-Online-Shop
 
 # ۲) متغیرهای محیطی
